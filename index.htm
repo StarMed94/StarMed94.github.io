@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -12,7 +11,7 @@
             --secondary: #8e59d7;
             --accent: #ff6b6b;
             --light: #f8f9fa;
-            --dark: #343a40;
+            --dark: #353739;
             --success: #28a745;
         }
         
@@ -41,7 +40,7 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(5, 5, 5, 0.1);
         }
         
         nav {
@@ -236,10 +235,20 @@
             text-decoration: none;
         }
         
-        /* Responsive */
+        /* Responsive Design - Improved */
         @media (max-width: 768px) {
             .nav-links {
-                display: none;
+                display: none; /* سيتم استبدال هذا بقائمة هامبرجر */
+            }
+            
+            /* إضافة زر القائمة للموبايل */
+            .menu-toggle {
+                display: block;
+                font-size: 1.5rem;
+                background: none;
+                border: none;
+                color: white;
+                cursor: pointer;
             }
             
             .hero h1 {
@@ -250,7 +259,66 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .pricing-cards {
+                flex-direction: column;
+                align-items: center;
+            }
         }
+        /* نموذج الاشتراك - مخفي initially */
+.subscription-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.close-form {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
@@ -263,8 +331,8 @@
                     <li><a href="#">الرئيسية</a></li>
                     <li><a href="#">كيف يعمل</a></li>
                     <li><a href="#">الأسعار</a></li>
-                    <li><a href="#">عن nosotros</a></li>
-                    <li><a href="https://www.facebook.com/Almoghtari">اتصل بنا</a></li>
+                    <li><a href="#">عنّا</a></li>
+                    <li><a href="#">اتصل بنا</a></li>
                 </ul>
                 <a href="#" class="btn">تسجيل الدخول</a>
             </nav>
@@ -276,7 +344,7 @@
         <div class="container">
             <h1>اربح مع كل مشترك جديد في Wokwidyou</h1>
             <p>انضم إلى نظام التسويق بالعمولة الخاص بنا وابدأ في جني الأرباح من خلال شبكتك. كل مشترك تجلبه يعني أرباح أكثر لك!</p>
-            <a href="#" class="btn">اشترك الآن</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdUkBltTG437KjQVWLyrpB2xFn40xUVVrJu9gxXUX60VD7ifA/viewform?usp=header" class="btn">اشترك الآن</a>
         </div>
     </section>
 
@@ -304,7 +372,7 @@
         </div>
     </section>
 
-    <!-- How It Works -->
+    <!-- How It Works - Section Fixed -->
     <section class="how-it-works">
         <div class="container">
             <h2 class="section-title">كيف يعمل النظام؟</h2>
@@ -334,32 +402,6 @@
                 <a href="https://github.com/" target="_blank" class="btn">شاهد المشروع على GitHub</a>
             </div>
         </div>
-    </section> <section class="how-it-works"></section></div>
-        <div class="container">
-            <h2 class="section-title">كيف يعمل النظام؟</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>أنشئ حسابك</h3>
-                    <p>قم بالتسجيل في الموقع واختر باقة الاشتراك المناسبة لك.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>انشر رابطك الخاص</h3>
-                    <p>استخدم رابط التسجيل الخاص بك لجلب أعضاء جدد إلى المنصة.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>اكسب العمولات</h3>
-                    <p>احصل على نسبة من اشتراك كل عضو جديد تدخله إلى المنصة.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>تابع أرباحك</h3>
-                    <p>شاهد أرباحك تنمو مع كل عضو جديد في شبكتك حتى 20 مستوى.</p>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Pricing -->
@@ -369,7 +411,7 @@
             <div class="pricing-cards">
                 <div class="pricing-card">
                     <h3>الباقة الأساسية</h3>
-                    <div class="price">$5</div>
+                    <div class="price">$50</div>
                     <p>اشتراك شهري</p>
                     <ul style="list-style: none; margin: 1.5rem 0;">
                         <li>عمولة 10% على المستوى الأول</li>
@@ -380,7 +422,7 @@
                 </div>
                 <div class="pricing-card">
                     <h3>الباقة المميزة</h3>
-                    <div class="price">$10</div>
+                    <div class="price">$100</div>
                     <p>اشتراك شهري</p>
                     <ul style="list-style: none; margin: 1.5rem 0;">
                         <li>عمولة 15% على المستوى الأول</li>
@@ -392,6 +434,28 @@
                 </div>
             </div>
         </div>
+        <!-- نهاية body قبل </body> -->
+<div class="overlay" id="overlay"></div>
+
+<div class="subscription-form" id="subscriptionForm">
+    <button class="close-form" onclick="closeForm()">×</button>
+    <h3>نموذج الاشتراك</h3>
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="name">الاسم الكامل</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">البريد الإلكتروني</label>
+            <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">رقم الهاتف</label>
+            <input type="tel" id="phone" required>
+        </div>
+        <button type="submit" class="btn" style="width:100%">إتمام الاشتراك</button>
+    </form>
+</div>
     </section>
 
     <!-- Footer -->
@@ -401,7 +465,7 @@
             <ul class="footer-links">
                 <li><a href="#">الشروط والأحكام</a></li>
                 <li><a href="#">سياسة الخصوصية</a></li>
-                <li><a href="https://www.facebook.com/Almoghtari">اتصل بنا</a></li>
+                <li><a href="#">اتصل بنا</a></li>
                 <li><a href="#">الأسئلة الشائعة</a></li>
             </ul>
             <p>© 2023 Wokwidyou. جميع الحقوق محفوظة.</p>
@@ -413,9 +477,39 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Wokwidyou Website Loaded');
         });
+        // نهاية script بعد console.log
+function openForm() {
+    document.getElementById('subscriptionForm').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function closeForm() {
+    document.getElementById('subscriptionForm').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+// إضافة event listener للزر
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Wokwidyou Website Loaded');
+    
+    // جعل أزرار "اشترك الآن" نشطة
+    const subscribeButtons = document.querySelectorAll('.btn');
+    subscribeButtons.forEach(button => {
+        if (button.textContent.includes('اشترك')) {
+            button.onclick = function(e) {
+                e.preventDefault();
+                openForm();
+            };
+        }
+    });
+    
+    // إدارة نموذج الاشتراك
+    document.getElementById('signupForm').onsubmit = function(e) {
+        e.preventDefault();
+        alert('شكراً لاشتراكك! سنتواصل معك قريباً.');
+        closeForm();
+    };
+});
     </script>
 </body>
 </html>
-
-
-
