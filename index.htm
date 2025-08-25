@@ -5,155 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wokwidyou - نظام التسويق بالعمولة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyACM1OTp1fQRe9JCvBo-XFvy74tJE9uRG4",
-  authDomain: "wookedyou.firebaseapp.com",
-  projectId: "wookedyou",
-  storageBucket: "wookedyou.firebasestorage.app",
-  messagingSenderId: "939856011028",
-  appId: "1:939856011028:web:25e9f410296da741422c01",
-  measurementId: "G-YH6TV9QW43"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-      // إدارة نموذج الاشتراك
-    document.getElementById('signupForm').onsubmit = function(e) {
-        e.preventDefault();
-        alert('شكراً لاشتراكك! سنتواصل معك قريباً.');
-        closeForm();
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyACM1OTp1fQRe9JCvBo-XFvy74tJE9uRG4",
-  authDomain: "wookedyou.firebaseapp.com",
-  projectId: "wookedyou",
-  storageBucket: "wookedyou.firebasestorage.app",
-  messagingSenderId: "939856011028",
-  appId: "1:939856011028:web:25e9f410296da741422c01",
-  measurementId: "G-YH6TV9QW43"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-    };
-});
-        // استبدال كود Formspree بالكود التالي في script
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        message: document.getElementById('message').value,
-        timestamp: new Date(),
-        status: 'new'
-    };
-    
-    try {
-        // حفظ البيانات في Firestore
-        const docRef = await addDoc(collection(db, "contacts"), formData);
-        console.log("Document written with ID: ", docRef.id);
-        
-        alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
-        contactForm.reset();
-    } catch (error) {
-        console.error("Error adding document: ", error);
-        alert('حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.');
-    }
-});
-        // وظائف لإدارة المستخدمين
-async function registerUser(email, password, userData) {
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        
-        // حفظ بيانات إضافية في Firestore
-        await addDoc(collection(db, "users"), {
-            uid: user.uid,
-            email: user.email,
-            ...userData,
-            createdAt: new Date()
-        });
-        
-        return user;
-    } catch (error) {
-        console.error("Error registering user:", error);
-        throw error;
-    }
-}
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js';
 
-// وظائف للتعامل مع الباقات
-async function createSubscription(userId, planData) {
-    try {
-        const subRef = await addDoc(collection(db, "subscriptions"), {
-            userId: userId,
-            plan: planData.plan,
-            price: planData.price,
-            status: "active",
-            startDate: new Date(),
-            endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 يوم
-        });
-        return subRef.id;
-    } catch (error) {
-        console.error("Error creating subscription:", error);
-        throw error;
-    }
-}
-        rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // السماح للجميع بالقراءة والكتابة (للبداية فقط)
-    match /{document=**} {
-      allow read, write: if true;
-    }
-    
-    // لاحقاً غيرها إلى:
-    // allow read, write: if request.auth != null;
-  }
-}
-      // اختبار الاتصال بقاعدة البيانات
-async function testConnection() {
-    try {
-        const testRef = await addDoc(collection(db, "test"), {
-            test: "Connection successful",
-            timestamp: new Date()
-        });
-        console.log("✅ Firebase connection successful!");
-        return true;
-    } catch (error) {
-        console.error("❌ Firebase connection failed:", error);
-        return false;
-    }
-}
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyACM1OTp1fQRe9JCvBo-XFvy74tJE9uRG4",
+            authDomain: "wookedyou.firebaseapp.com",
+            projectId: "wookedyou",
+            storageBucket: "wookedyou.firebasestorage.app",
+            messagingSenderId: "939856011028",
+            appId: "1:939856011028:web:25e9f410296da741422c01",
+            measurementId: "G-YH6TV9QW43"
+        };
 
-// تشغيل الاختبار عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    testConnection().then(success => {
-        if (success) {
-            console.log('Wokwidyou Website Loaded with Firebase');
-        }
-    });
-});
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // جعل المتغيرات عامة للاستخدام في其他地方
+        window.firebaseApp = app;
+        window.firebaseDB = db;
+        window.firebaseAuth = auth;
+        window.firebaseAddDoc = addDoc;
+        window.firebaseCollection = collection;
+        window.firebaseGetDocs = getDocs;
+        window.createUser = createUserWithEmailAndPassword;
+        window.signInUser = signInWithEmailAndPassword;
+    </script>
+
     <style>
         :root {
             --primary: #4e60d3;
@@ -175,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             background-color: #f5f7ff;
             color: var(--dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
         
         .container {
@@ -190,6 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
             color: white;
             padding: 1rem 0;
             box-shadow: 0 4px 12px rgba(5, 5, 5, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
         
         nav {
@@ -217,15 +108,18 @@ document.addEventListener('DOMContentLoaded', function() {
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
         }
         
         .nav-links a:hover {
             color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .btn {
             display: inline-block;
-            padding: 0.6rem 1.5rem;
+            padding: 0.8rem 2rem;
             background-color: var(--accent);
             color: white;
             border-radius: 50px;
@@ -234,36 +128,64 @@ document.addEventListener('DOMContentLoaded', function() {
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
         
         .btn:hover {
             background-color: #ff5252;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent);
+            color: white;
         }
         
         /* Hero Section */
         .hero {
-            padding: 4rem 0;
+            padding: 8rem 0 4rem;
             text-align: center;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234e60d3" opacity="0.1"/><path d="M0 0L100 100" stroke="%234e60d3" stroke-width="2" opacity="0.2"/></svg>');
+            background: linear-gradient(135deg, rgba(78, 96, 211, 0.1) 0%, rgba(142, 89, 215, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234e60d3" opacity="0.05"/><path d="M0 0L100 100" stroke="%234e60d3" stroke-width="1" opacity="0.1"/></svg>');
+            z-index: -1;
         }
         
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
             color: var(--primary);
+            animation: fadeInUp 1s ease;
         }
         
         .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
             color: var(--dark);
+            animation: fadeInUp 1s ease 0.2s both;
         }
         
         /* Features Section */
         .features {
-            padding: 4rem 0;
+            padding: 5rem 0;
             background-color: white;
         }
         
@@ -271,57 +193,113 @@ document.addEventListener('DOMContentLoaded', function() {
             text-align: center;
             margin-bottom: 3rem;
             color: var(--primary);
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 2px;
         }
         
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
+            margin-top: 3rem;
         }
         
         .feature-card {
             background-color: var(--light);
-            padding: 2rem;
-            border-radius: 10px;
+            padding: 2.5rem;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
         }
         
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         
         .feature-icon {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
             margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
         }
         
         /* How It Works */
         .how-it-works {
-            padding: 4rem 0;
-            background-color: #f5f7ff;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f3ff 100%);
+            position: relative;
         }
         
         .steps {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
         }
         
         .step {
             text-align: center;
-            max-width: 250px;
-            margin: 1rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
             position: relative;
+            z-index: 2;
+        }
+        
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
         }
         
         .step-number {
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border-radius: 50%;
             display: flex;
@@ -329,145 +307,293 @@ document.addEventListener('DOMContentLoaded', function() {
             justify-content: center;
             font-size: 1.5rem;
             font-weight: bold;
-            margin: 0 auto 1rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 5px 15px rgba(78, 96, 211, 0.3);
+        }
+        
+        .step h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .step p {
+            color: #666;
+            line-height: 1.7;
         }
         
         /* Pricing */
         .pricing {
-            padding: 4rem 0;
-            background-color: white;
+            padding: 5rem 0;
+            background: white;
         }
         
         .pricing-cards {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
         }
         
         .pricing-card {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 2.5rem;
-            border-radius: 10px;
+            padding: 3rem 2.5rem;
+            border-radius: 20px;
             text-align: center;
-            width: 300px;
-            box-shadow: 0 10px 30px rgba(78, 96, 211, 0.2);
+            box-shadow: 0 20px 40px rgba(78, 96, 211, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover::before {
+            transform: rotate(45deg) translate(20px, 20px);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(78, 96, 211, 0.3);
+        }
+        
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
         }
         
         .price {
-            font-size: 2.5rem;
-            margin: 1rem 0;
+            font-size: 3rem;
+            margin: 1.5rem 0;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .price::before {
+            content: '$';
+            font-size: 2rem;
+            vertical-align: super;
+            margin-right: 0.2rem;
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            margin: 2rem 0;
+            padding: 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .pricing-card ul li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .pricing-card ul li:last-child {
+            border-bottom: none;
+        }
+        
+        /* نموذج الاشتراك */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .subscription-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            z-index: 1000;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(78, 96, 211, 0.1);
+        }
+
+        .close-form {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--dark);
         }
         
         /* Footer */
         footer {
-            background-color: var(--dark);
+            background: linear-gradient(135deg, var(--dark), #2c3034);
             color: white;
-            padding: 3rem 0 1rem;
+            padding: 4rem 0 2rem;
             text-align: center;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: right;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .footer-links {
             display: flex;
-            justify-content: center;
-            list-style: none;
-            margin: 1rem 0;
-        }
-        
-        .footer-links li {
-            margin: 0 1rem;
+            flex-direction: column;
+            gap: 0.8rem;
         }
         
         .footer-links a {
-            color: white;
+            color: #ccc;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
         
-        /* Responsive Design - Improved */
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(-5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+        }
+        
+        /* Responsive Design */
         @media (max-width: 768px) {
             .nav-links {
-                display: none; /* سيتم استبدال هذا بقائمة هامبرجر */
-            }
-            
-            /* إضافة زر القائمة للموبايل */
-            .menu-toggle {
-                display: block;
-                font-size: 1.5rem;
-                background: none;
-                border: none;
-                color: white;
-                cursor: pointer;
+                display: none;
             }
             
             .hero h1 {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
             
-            .steps {
-                flex-direction: column;
-                align-items: center;
+            .hero p {
+                font-size: 1.1rem;
             }
             
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .features-grid,
+            .steps,
             .pricing-cards {
-                flex-direction: column;
-                align-items: center;
+                grid-template-columns: 1fr;
+            }
+            
+            .subscription-form {
+                padding: 1.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
             }
         }
-        /* نموذج الاشتراك - مخفي initially */
-.subscription-form {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    z-index: 1000;
-    width: 90%;
-    max-width: 400px;
-}
-
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.close-form {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.8s ease both;
+        }
     </style>
 </head>
 <body>
@@ -477,42 +603,42 @@ document.addEventListener('DOMContentLoaded', function() {
             <nav>
                 <div class="logo">Wokwidyou</div>
                 <ul class="nav-links">
-                    <li><a href="#">الرئيسية</a></li>
-                    <li><a href="#">كيف يعمل</a></li>
-                    <li><a href="#">الأسعار</a></li>
-                    <li><a href="#">عنّا</a></li>
-                    <li><a href="#">اتصل بنا</a></li>
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="#features">المميزات</a></li>
+                    <li><a href="#how-it-works">كيف يعمل</a></li>
+                    <li><a href="#pricing">الباقات</a></li>
+                    <li><a href="#contact">اتصل بنا</a></li>
                 </ul>
-                <a href="#" class="btn">تسجيل الدخول</a>
+                <a href="#login" class="btn">تسجيل الدخول</a>
             </nav>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="home" class="hero">
         <div class="container">
             <h1>اربح مع كل مشترك جديد في Wokwidyou</h1>
             <p>انضم إلى نظام التسويق بالعمولة الخاص بنا وابدأ في جني الأرباح من خلال شبكتك. كل مشترك تجلبه يعني أرباح أكثر لك!</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdUkBltTG437KjQVWLyrpB2xFn40xUVVrJu9gxXUX60VD7ifA/viewform?usp=header" class="btn">اشترك الآن</a>
+            <a href="#" class="btn" onclick="openForm(); return false;">اشترك الآن</a>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features">
+    <section id="features" class="features">
         <div class="container">
             <h2 class="section-title">مميزات Wokwidyou</h2>
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card fade-in">
                     <div class="feature-icon">💸</div>
                     <h3>أرباح متعددة المستويات</h3>
                     <p>احصل على نسبة من اشتراك الأعضاء الذين يجلبونهم أعضاء شبكتك حتى 20 مستوى.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card fade-in">
                     <div class="feature-icon">📊</div>
                     <h3>لوحة تحكم متكاملة</h3>
                     <p>تابع أرباحك وشبكتك وإحصائياتك من خلال لوحة تحكم سهلة الاستخدام.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card fade-in">
                     <div class="feature-icon">🚀</div>
                     <h3>دعم فني متكامل</h3>
                     <p>فريق دعم فني متاح لمساعدتك في أي استفسار أو مشكلة تواجهك.</p>
@@ -521,141 +647,301 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </section>
 
-    <!-- How It Works - Section Fixed -->
-    <section class="how-it-works">
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
         <div class="container">
             <h2 class="section-title">كيف يعمل النظام؟</h2>
             <div class="steps">
-                <div class="step">
+                <div class="step fade-in">
                     <div class="step-number">1</div>
                     <h3>أنشئ حسابك</h3>
                     <p>قم بالتسجيل في الموقع واختر باقة الاشتراك المناسبة لك.</p>
                 </div>
-                <div class="step">
+                <div class="step fade-in">
                     <div class="step-number">2</div>
                     <h3>انشر رابطك الخاص</h3>
                     <p>استخدم رابط التسجيل الخاص بك لجلب أعضاء جدد إلى المنصة.</p>
                 </div>
-                <div class="step">
+                <div class="step fade-in">
                     <div class="step-number">3</div>
                     <h3>اكسب العمولات</h3>
                     <p>احصل على نسبة من اشتراك كل عضو جديد تدخله إلى المنصة.</p>
                 </div>
-                <div class="step">
+                <div class="step fade-in">
                     <div class="step-number">4</div>
                     <h3>تابع أرباحك</h3>
                     <p>شاهد أرباحك تنمو مع كل عضو جديد في شبكتك حتى 20 مستوى.</p>
                 </div>
             </div>
-            <div style="text-align:center; margin-top:2rem;">
-                <a href="https://github.com/" target="_blank" class="btn">شاهد المشروع على GitHub</a>
-            </div>
         </div>
     </section>
 
     <!-- Pricing -->
-    <section class="pricing">
+    <section id="pricing" class="pricing">
         <div class="container">
             <h2 class="section-title">باقات الاشتراك</h2>
             <div class="pricing-cards">
-                <div class="pricing-card">
+                <div class="pricing-card fade-in">
                     <h3>الباقة الأساسية</h3>
-                    <div class="price">$50</div>
+                    <div class="price">50</div>
                     <p>اشتراك شهري</p>
-                    <ul style="list-style: none; margin: 1.5rem 0;">
+                    <ul>
                         <li>عمولة 10% على المستوى الأول</li>
                         <li>عمولة 5% على المستوى الثاني</li>
                         <li>دعم فني أساسي</li>
+                        <li>لوحة تحكم شخصية</li>
+                        <li>تقارير شهرية</li>
                     </ul>
-                    <a href="#" class="btn">اشترك الآن</a>
+                    <a href="#" class="btn btn-outline" onclick="openForm(); return false;">اشترك الآن</a>
                 </div>
-                <div class="pricing-card">
+                <div class="pricing-card fade-in">
                     <h3>الباقة المميزة</h3>
-                    <div class="price">$100</div>
+                    <div class="price">100</div>
                     <p>اشتراك شهري</p>
-                    <ul style="list-style: none; margin: 1.5rem 0;">
+                    <ul>
                         <li>عمولة 15% على المستوى الأول</li>
                         <li>عمولة 10% على المستوى الثاني</li>
                         <li>عمولة 5% على المستوى الثالث</li>
-                        <li>دعم فني مميز</li>
+                        <li>دعم فني مميز 24/7</li>
+                        <li>تقارير أسبوعية مفصلة</li>
+                        <li>أدوات تسويق متقدمة</li>
                     </ul>
-                    <a href="#" class="btn">اشترك الآن</a>
+                    <a href="#" class="btn" onclick="openForm(); return false;">اشترك الآن</a>
                 </div>
             </div>
         </div>
-        <!-- نهاية body قبل </body> -->
-<div class="overlay" id="overlay"></div>
-
-<div class="subscription-form" id="subscriptionForm">
-    <button class="close-form" onclick="closeForm()">×</button>
-    <h3>نموذج الاشتراك</h3>
-    <form id="signupForm">
-        <div class="form-group">
-            <label for="name">الاسم الكامل</label>
-            <input type="text" id="name" required>
-        </div>
-        <div class="form-group">
-            <label for="email">البريد الإلكتروني</label>
-            <input type="email" id="email" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">رقم الهاتف</label>
-            <input type="tel" id="phone" required>
-        </div>
-        <button type="submit" class="btn" style="width:100%">إتمام الاشتراك</button>
-    </form>
-</div>
     </section>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="logo">Wokwidyou</div>
-            <ul class="footer-links">
-                <li><a href="#">الشروط والأحكام</a></li>
-                <li><a href="#">سياسة الخصوصية</a></li>
-                <li><a href="#">اتصل بنا</a></li>
-                <li><a href="#">الأسئلة الشائعة</a></li>
-            </ul>
-            <p>© 2023 Wokwidyou. جميع الحقوق محفوظة.</p>
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Wokwidyou</div>
+                    <p>منصة رائدة في التسويق بالعمولة تساعدك على بناء مستقبل مالي أفضل من خلال شبكتك.</p>
+                </div>
+                <div>
+                    <h3>روابط سريعة</h3>
+                    <div class="footer-links">
+                        <a href="#home">الرئيسية</a>
+                        <a href="#features">المميزات</a>
+                        <a href="#how-it-works">كيف يعمل</a>
+                        <a href="#pricing">الباقات</a>
+                        <a href="#contact">اتصل بنا</a>
+                    </div>
+                </div>
+                <div>
+                    <h3>الشروط والسياسات</h3>
+                    <div class="footer-links">
+                        <a href="#terms">الشروط والأحكام</a>
+                        <a href="#privacy">سياسة الخصوصية</a>
+                        <a href="#refund">سياسة الاسترجاع</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 Wokwidyou. جميع الحقوق محفوظة.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- نموذج الاشتراك -->
+    <div class="overlay" id="overlay"></div>
+
+    <div class="subscription-form" id="subscriptionForm">
+        <button class="close-form" onclick="closeForm()">×</button>
+        <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary);">نموذج الاشتراك</h3>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="name">الاسم الكامل</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">البريد الإلكتروني</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">رقم الهاتف</label>
+                <input type="tel" id="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="plan">الباقة المطلوبة</label>
+                <select id="plan" required>
+                    <option value="">اختر الباقة</option>
+                    <option value="basic">الباقة الأساسية ($50)</option>
+                    <option value="premium">الباقة المميزة ($100)</option>
+                </select>
+            </div>
+            <button type="submit" class="btn" style="width:100%">إتمام الاشتراك</button>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
     <script>
-        // يمكن إضافة interactivity هنا لاحقًا
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Wokwidyou Website Loaded');
-        });
-        // نهاية script بعد console.log
-function openForm() {
-    document.getElementById('subscriptionForm').style.display = 'block';
-    document.getElementById('overlay').style.display = 'block';
-}
-
-function closeForm() {
-    document.getElementById('subscriptionForm').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-}
-
-// إضافة event listener للزر
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Wokwidyou Website Loaded');
-    
-    // جعل أزرار "اشترك الآن" نشطة
-    const subscribeButtons = document.querySelectorAll('.btn');
-    subscribeButtons.forEach(button => {
-        if (button.textContent.includes('اشترك')) {
-            button.onclick = function(e) {
-                e.preventDefault();
-                openForm();
-            };
+        // وظائف فتح وإغلاق النموذج
+        function openForm() {
+            document.getElementById('subscriptionForm').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
         }
-    });
-    
-  
+
+        function closeForm() {
+            document.getElementById('subscriptionForm').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // إدارة نموذج الاشتراك
+        document.getElementById('signupForm').onsubmit = async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                plan: document.getElementById('plan').value,
+                timestamp: new Date(),
+                status: 'new'
+            };
+            
+            try {
+                // حفظ البيانات في Firestore
+                const docRef = await addDoc(collection(db, "subscriptions"), formData);
+                console.log("Document written with ID: ", docRef.id);
+                
+                alert('شكراً لاشتراكك! سنتواصل معك قريباً.');
+                document.getElementById('signupForm').reset();
+                closeForm();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert('حدث خطأ أثناء إرسال البيانات. يرجى المحاولة مرة أخرى.');
+            }
+        };
+
+        // وظائف لإدارة المستخدمين
+        async function registerUser(email, password, userData) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // حفظ بيانات إضافية في Firestore
+                await addDoc(collection(db, "users"), {
+                    uid: user.uid,
+                    email: user.email,
+                    ...userData,
+                    createdAt: new Date()
+                });
+                
+                return user;
+            } catch (error) {
+                console.error("Error registering user:", error);
+                throw error;
+            }
+        }
+
+        // وظائف للتعامل مع الباقات
+        async function createSubscription(userId, planData) {
+            try {
+                const subRef = await addDoc(collection(db, "subscriptions"), {
+                    userId: userId,
+                    plan: planData.plan,
+                    price: planData.price,
+                    status: "active",
+                    startDate: new Date(),
+                    endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 يوم
+                });
+                return subRef.id;
+            } catch (error) {
+                console.error("Error creating subscription:", error);
+                throw error;
+            }
+        }
+
+        // اختبار الاتصال بقاعدة البيانات
+        async function testConnection() {
+            try {
+                const testRef = await addDoc(collection(db, "test"), {
+                    test: "Connection successful",
+                    timestamp: new Date()
+                });
+                console.log("✅ Firebase connection successful!");
+                return true;
+            } catch (error) {
+                console.error("❌ Firebase connection failed:", error);
+                return false;
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .step, .pricing-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Sticky header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // تشغيل الاختبار عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            testConnection().then(success => {
+                if (success) {
+                    console.log('Wokwidyou Website Loaded with Firebase');
+                }
+            });
+            
+            // جعل أزرار "اشترك الآن" نشطة
+            const subscribeButtons = document.querySelectorAll('.btn');
+            subscribeButtons.forEach(button => {
+                if (button.textContent.includes('اشترك')) {
+                    button.onclick = function(e) {
+                        e.preventDefault();
+                        openForm();
+                    };
+                }
+            });
+        });
     </script>
 </body>
 </html>
-
-
-
