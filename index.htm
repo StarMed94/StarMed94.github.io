@@ -26,6 +26,113 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+      // إدارة نموذج الاشتراك
+    document.getElementById('signupForm').onsubmit = function(e) {
+        e.preventDefault();
+        alert('شكراً لاشتراكك! سنتواصل معك قريباً.');
+        closeForm();
+    };
+});
+        // استبدال كود Formspree بالكود التالي في script
+const contactForm = document.getElementById('contactForm');
+
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        message: document.getElementById('message').value,
+        timestamp: new Date(),
+        status: 'new'
+    };
+    
+    try {
+        // حفظ البيانات في Firestore
+        const docRef = await addDoc(collection(db, "contacts"), formData);
+        console.log("Document written with ID: ", docRef.id);
+        
+        alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
+        contactForm.reset();
+    } catch (error) {
+        console.error("Error adding document: ", error);
+        alert('حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.');
+    }
+});
+        // وظائف لإدارة المستخدمين
+async function registerUser(email, password, userData) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // حفظ بيانات إضافية في Firestore
+        await addDoc(collection(db, "users"), {
+            uid: user.uid,
+            email: user.email,
+            ...userData,
+            createdAt: new Date()
+        });
+        
+        return user;
+    } catch (error) {
+        console.error("Error registering user:", error);
+        throw error;
+    }
+}
+
+// وظائف للتعامل مع الباقات
+async function createSubscription(userId, planData) {
+    try {
+        const subRef = await addDoc(collection(db, "subscriptions"), {
+            userId: userId,
+            plan: planData.plan,
+            price: planData.price,
+            status: "active",
+            startDate: new Date(),
+            endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 يوم
+        });
+        return subRef.id;
+    } catch (error) {
+        console.error("Error creating subscription:", error);
+        throw error;
+    }
+}
+        rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // السماح للجميع بالقراءة والكتابة (للبداية فقط)
+    match /{document=**} {
+      allow read, write: if true;
+    }
+    
+    // لاحقاً غيرها إلى:
+    // allow read, write: if request.auth != null;
+  }
+}
+      // اختبار الاتصال بقاعدة البيانات
+async function testConnection() {
+    try {
+        const testRef = await addDoc(collection(db, "test"), {
+            test: "Connection successful",
+            timestamp: new Date()
+        });
+        console.log("✅ Firebase connection successful!");
+        return true;
+    } catch (error) {
+        console.error("❌ Firebase connection failed:", error);
+        return false;
+    }
+}
+
+// تشغيل الاختبار عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    testConnection().then(success => {
+        if (success) {
+            console.log('Wokwidyou Website Loaded with Firebase');
+        }
+    });
+});
     <style>
         :root {
             --primary: #4e60d3;
@@ -524,114 +631,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // إدارة نموذج الاشتراك
-    document.getElementById('signupForm').onsubmit = function(e) {
-        e.preventDefault();
-        alert('شكراً لاشتراكك! سنتواصل معك قريباً.');
-        closeForm();
-    };
-});
-        // استبدال كود Formspree بالكود التالي في script
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        message: document.getElementById('message').value,
-        timestamp: new Date(),
-        status: 'new'
-    };
-    
-    try {
-        // حفظ البيانات في Firestore
-        const docRef = await addDoc(collection(db, "contacts"), formData);
-        console.log("Document written with ID: ", docRef.id);
-        
-        alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
-        contactForm.reset();
-    } catch (error) {
-        console.error("Error adding document: ", error);
-        alert('حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.');
-    }
-});
-        // وظائف لإدارة المستخدمين
-async function registerUser(email, password, userData) {
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        
-        // حفظ بيانات إضافية في Firestore
-        await addDoc(collection(db, "users"), {
-            uid: user.uid,
-            email: user.email,
-            ...userData,
-            createdAt: new Date()
-        });
-        
-        return user;
-    } catch (error) {
-        console.error("Error registering user:", error);
-        throw error;
-    }
-}
-
-// وظائف للتعامل مع الباقات
-async function createSubscription(userId, planData) {
-    try {
-        const subRef = await addDoc(collection(db, "subscriptions"), {
-            userId: userId,
-            plan: planData.plan,
-            price: planData.price,
-            status: "active",
-            startDate: new Date(),
-            endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 يوم
-        });
-        return subRef.id;
-    } catch (error) {
-        console.error("Error creating subscription:", error);
-        throw error;
-    }
-}
-        rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // السماح للجميع بالقراءة والكتابة (للبداية فقط)
-    match /{document=**} {
-      allow read, write: if true;
-    }
-    
-    // لاحقاً غيرها إلى:
-    // allow read, write: if request.auth != null;
-  }
-}
-      // اختبار الاتصال بقاعدة البيانات
-async function testConnection() {
-    try {
-        const testRef = await addDoc(collection(db, "test"), {
-            test: "Connection successful",
-            timestamp: new Date()
-        });
-        console.log("✅ Firebase connection successful!");
-        return true;
-    } catch (error) {
-        console.error("❌ Firebase connection failed:", error);
-        return false;
-    }
-}
-
-// تشغيل الاختبار عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    testConnection().then(success => {
-        if (success) {
-            console.log('Wokwidyou Website Loaded with Firebase');
-        }
-    });
-});
+  
     </script>
 </body>
 </html>
+
 
