@@ -5,6 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wokwidyou - نظام التسويق بالعمولة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK البسيط والموثوق -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script>
+        // تكوين Firebase - تأكد من أن هذه البيانات صحيحة
+        const firebaseConfig = {
+            apiKey: "AIzaSyACM1OTp1fQRe9JCvBo-XFvy74tJE9uRG4",
+            authDomain: "wookedyou.firebaseapp.com",
+            projectId: "wookedyou",
+            storageBucket: "wookedyou.firebasestorage.app",
+            messagingSenderId: "939856011028",
+            appId: "1:939856011028:web:25e9f410296da741422c01",
+            measurementId: "G-YH6TV9QW43"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        console.log("✅ Firebase initialized successfully");
+    </script>
+
     <style>
         :root {
             --primary: #4e60d3;
@@ -290,7 +313,7 @@
             color: var(--primary);
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 0.8rem;
             border: 2px solid #e9ecef;
@@ -477,7 +500,7 @@
         }
 
         // إدارة نموذج الاشتراك
-        document.getElementById('signupForm').onsubmit = function(e) {
+        document.getElementById('signupForm').onsubmit = async function(e) {
             e.preventDefault();
             
             const formData = {
@@ -485,23 +508,30 @@
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
                 plan: document.getElementById('plan').value,
-                timestamp: new Date()
+                timestamp: new Date(),
+                status: 'new'
             };
             
-            // هنا سيتم إضافة كود Firebase لاحقاً
-            console.log('بيانات الاشتراك:', formData);
-            
-            alert('شكراً لاشتراكك! سنتواصل معك قريباً.');
-            document.getElementById('signupForm').reset();
-            closeForm();
+            try {
+                // حفظ البيانات في Firestore
+                const docRef = await db.collection("subscriptions").add(formData);
+                console.log("✅ تم حفظ البيانات بنجاح! ID:", docRef.id);
+                
+                alert('شكراً لاشتراكك! سنتواصل معك قريباً.');
+                document.getElementById('signupForm').reset();
+                closeForm();
+            } catch (error) {
+                console.error("❌ خطأ في الحفظ:", error);
+                alert('حدث خطأ أثناء إرسال البيانات. يرجى المحاولة مرة أخرى.');
+            }
             
             return false;
         };
 
-        // إغلاق النموذع عند النقر خارجها
+        // إغلاق النموذج عند النقر خارجها
         document.getElementById('overlay').onclick = closeForm;
 
-        console.log('تم تحميل الموقع بنجاح!');
+        console.log('✅ تم تحميل الموقع بنجاح!');
     </script>
 </body>
 </html>
