@@ -20,7 +20,33 @@
             appId: "1:939856011028:web:25e9f410296da741422c01",
             measurementId: "G-YH6TV9QW43"
         };
+// دالة لاختبار أن البيانات تصل إلى Firebase
+async function testFirebaseConnection() {
+    try {
+        const testData = {
+            test: "اختبار الاتصال",
+            timestamp: new Date()
+        };
+        
+        const docRef = await db.collection("test").add(testData);
+        console.log("✅ تم الاختبار بنجاح! Document ID:", docRef.id);
+        
+        // عرض البيانات المخزنة
+        const querySnapshot = await db.collection("subscriptions").get();
+        querySnapshot.forEach((doc) => {
+            console.log("المشترك:", doc.id, "=>", doc.data());
+        });
+        
+    } catch (error) {
+        console.error("❌ فشل الاختبار:", error);
+    }
+}
 
+// تشغيل الاختبار عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ تم تحميل الموقع بنجاح!');
+    testFirebaseConnection();
+});
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -535,3 +561,4 @@
     </script>
 </body>
 </html>
+
